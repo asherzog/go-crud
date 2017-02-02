@@ -98,16 +98,20 @@ func DeleteArticle(c *gin.Context) {
 }
 
 func UpdateArticle(c *gin.Context) {
-  // article_id := c.Param("article_id")
-  // a_id, _ := strconv.Atoi(article_id)
-  // article := getArticle(a_id)
-  // newArticle := Article{
-  //     Created:    time.Now().UnixNano(),
-  //     Title:      title,
-  //     Content:    body,
-  // }
-  // count, _ := dbmap.Update(&newArticle)
-  // c.JSON(200, count)
+  article_id := c.Param("article_id")
+  a_id, _ := strconv.Atoi(article_id)
+  article := getArticle(a_id)
+  id := int64(a_id)
+  var newArticle Article
+  c.Bind(&newArticle)
+  result := Article{
+    Id: id,
+    Created: article.Created,
+    Title: newArticle.Title,
+    Content: newArticle.Content,
+  }
+  count, _ := dbmap.Update(&result)
+  c.JSON(200, count)
 }
 
 func getArticle(article_id int) Article {
